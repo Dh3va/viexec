@@ -1,0 +1,3 @@
+vcenter.vmware.ntt.eu
+vcenter-rim.sys.ntt.eu
+vcenter2-rim-hemel.infra.ntt.eu
