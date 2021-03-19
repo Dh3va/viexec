@@ -6,45 +6,29 @@ param(
     [ValidateSet("vcenter.vmware.ntt.eu", "vcenter-rim.sys.ntt.eu", "vcenter2-rim-hemel.infra.ntt.eu")]
     [string]$server,
     [ValidateSet("PROD-CUBE", "Prod-Cube-2", "PROD-OSMOSE", "DRP-PP", "PP-CUBE", "Kubota_Prod")]
-    [string]$cluster
+    [string]$cluster,
+    [switch]$help
 )
+
 #Utils.ps1 contains all the defined functions
 .("./utils.ps1")
+
+if ($script -eq "help" -Or $help) {
+    .("./help.ps1")    
+    exit 0
+}
 
 Ensure-Server-Set
 
 Ensure-Cluster-Set
 
 #Filters all the scripts inside ./scripts that contains .ps1
-$available_scripts = Get-ChildItem "./scripts" -Name -Filter *.ps1 
+$AvailableScripts = Get-ChildItem "./scripts" -Name -Filter *.ps1 
 
 #Normalize user input removing the extension .ps1
-#$script = Normalize-Script-Name($script)
+$script = Normalize-Script-Name -Script $script
 
-if(
-    $script -match '.ps1'
-) 
-{
-    $script = $script -replace '\.ps1$', ""
-}
-
-#Checks if the script exists
-$script_exists = $available_scripts.Contains("$script.ps1")  
-
-if(
-    -not($script_exists)
-)
-{
-    Write-Host "The script $script doesn't exist. This is a list of existing scripts:`n "
-
-Script-List
-
-    foreach ($scriptfile in $scriptfiles) {
-        Write-Host "$scriptfile"
-    }
-    
-    exit 1
-}
+Ensure-Script-Exists -Script $script -AvailableScripts $AvailableScripts
 
 .("./scripts/$script.ps1")
 
