@@ -1,5 +1,6 @@
-$user_path = "F:\Alessandro"
+#Utils.ps1 contains all the defined functions
+.("./utils.ps1")
 
-$username = "ntteng\apranzo"
+Ensure-Path-Exists
 
-$password = "password"
+

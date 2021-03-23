@@ -1,9 +1,9 @@
-#! /usr/bin/env pwsh
+#! /usr/local/bin/pwsh
 
 #This will print the "help" page as soon as the viexec script is launched. By default server and cluster are empty.
 param(
     [string]$script = "help",
-    [ValidateSet("vcenter.vmware.ntt.eu", "vcenter-rim.sys.ntt.eu", "vcenter2-rim-hemel.infra.ntt.eu")]
+    [ValidateSet("localhost", "vcenter.vmware.ntt.eu", "vcenter-rim.sys.ntt.eu", "vcenter2-rim-hemel.infra.ntt.eu")]
     [string]$server,
     [ValidateSet("PROD-CUBE", "Prod-Cube-2", "PROD-OSMOSE", "DRP-PP", "PP-CUBE", "Kubota_Prod")]
     [string]$cluster,
@@ -17,6 +17,8 @@ if ($script -eq "help" -Or $help) {
     .("./help.ps1")    
     exit 0
 }
+
+Ensure-Path-Exists
 
 Ensure-Server-Set
 

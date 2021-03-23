@@ -1,8 +1,10 @@
 .("./config.ps1")
 
-Connect-VIServer $server -User $username -Password $password
+Get-Credentials-Connect
 
-Get-Cluster $cluster Get-VM |
+Get-Cluster $cluster | 
+
+Get-VM |
 
 Select Name, VMHost, @{N = "IP Address"; E = { @($_.guest.IPAddress -join '|') } } |
 
@@ -28,6 +30,10 @@ $report = foreach ($vm in Get-VM) {
 
 }
 
-$report | Sort-Object -Property { ($_ | Get-Member -MemberType Properties).Count } -Descending |
+$report | 
+
+Sort-Object -Property { ($_ | 
+    
+        Get-Member -MemberType Properties).Count } -Descending |
 
 Export-Csv $user_path".csv" -NoTypeInformation -UseCulture
