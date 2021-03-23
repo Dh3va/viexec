@@ -1,6 +1,6 @@
 #! /usr/local/bin/pwsh
 
-#This will print the "help" page as soon as the viexec script is launched. By default server and cluster are empty.
+#Show "help" page as default script, it also contains the server and cluster values.
 param(
     [string]$script = "help",
     [ValidateSet("localhost", "vcenter.vmware.ntt.eu", "vcenter-rim.sys.ntt.eu", "vcenter2-rim-hemel.infra.ntt.eu")]
@@ -18,14 +18,14 @@ if ($script -eq "help" -Or $help) {
     exit 0
 }
 
-Ensure-Path-Exists
+# Ensure-Path-Exists
 
-Ensure-Server-Set
+# Ensure-Server-Set
 
-Ensure-Cluster-Set
+# Ensure-Cluster-Set
 
 #Filters all the scripts inside ./scripts that contains .ps1
-$AvailableScripts = Get-ChildItem "./scripts" -Name -Filter *.ps1 
+$AvailableScripts = Get-ChildItem "scripts" -Name -Filter *.ps1 
 
 #Normalize user input removing the extension .ps1
 $script = Normalize-Script-Name -Script $script

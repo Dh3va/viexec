@@ -3,11 +3,8 @@ function Ensure-Server-Set {
         -not($server)
     ) {
         Write-Warning "-server is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
+        
         exit 1
-
-        $available_servers = Get-Content -Path .\ServerList\serverlist.txt
-
-        Write-Host "$available_servers"
 
     }
 }
@@ -15,7 +12,9 @@ function Ensure-Cluster-Set {
     if (
         -not($cluster)
     ) {
+
         Write-Warning "-cluster is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
+        
         exit 1
     }
 }
@@ -24,38 +23,39 @@ function Get-Credentials-Connect {
     param(
         [string]$Credentials
     )
-   
-    $User = Read-Host -Prompt "Enter username NTTENG\username"
 
-    $SecurePassword = Read-Host -Prompt "Enter password" -AsSecureString
+    $Credentials = Import-Clixml -Path $UserPath\ucred-secure.cred
 
-    Connect-VIServer $server -User $User -Password $SecurePassword
+    Connect-VIServer -Server $server -Credential $Credentials
 
 }
 
 # function Ensure-Config-Exists {
 
-#     If ((Test "config.ps1") -eq $Null) {
-
-#         $confirmation = Read-Host "Would you like to run the configuration file now?"
+#     If (!(test-path $UserPath\ucred-secure.cred)) {
+#         $confirmation = Read-Host "Would you like to run the configuration file now? (y/n)"
 
 #         if ($confirmation -eq 'y') {
 
 #             .("./config.ps1")
 
 #         }
+#         else {
+#             Exit 1
+#         }
 #     }
 # }
 
-function Ensure-Path-Exists {
-    $UserPath = ".\temp"
+# function Ensure-Path-Exists {
 
-    If (!(test-path $UserPath)) {
+#     $UserPath = ".\temp"
 
-        New-Item -ItemType Directory -Force -Path $UserPath
+#     If (!(test-path $UserPath)) {
 
-    }
-}
+#         New-Item -ItemType Directory -Force -Path $UserPath
+
+#     }
+# }
 
 function Ensure-Script-Exists {
 
@@ -72,7 +72,7 @@ function Ensure-Script-Exists {
 
     ) {
 
-        Write-Warning "The script $Script doesn't exist.`n "
+        Write-Warning "The script $Script doesn't exist.`n"
 
         Script-List -AvailableScripts $AvailableScripts
 
@@ -90,9 +90,7 @@ function Ensure-Script-Exists {
 function Normalize-Script-Name {
 
     param(
-
         [string]$Script
-
     )
     if (
 
@@ -106,14 +104,11 @@ function Normalize-Script-Name {
 }
 
 function Script-List {
-
     param(
-
         [string[]]$AvailableScripts
-
     )
 
     $ScriptsList = $AvailableScripts -join "`n"
-
-    Write-Host "This is the list of available scripts:`n$ScriptsList"
+    
+    Write-Host "This is the list of available scripts:`n$ScriptsList`n"
 }

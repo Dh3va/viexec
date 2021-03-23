@@ -3,4 +3,7 @@
 
 Ensure-Path-Exists
 
+$Credentials = Get-Credential
+
+$Credentials | Export-Clixml -Force -Path $UserPath\ucred-secure.cred
 

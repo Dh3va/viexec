@@ -1,14 +1,26 @@
 .("./config.ps1")
 
+#Connection
 Get-Credentials-Connect
 
+#PowerCLI script
 Get-Cluster $cluster | 
 
 Get-VM |
 
-Select Name, VMHost, @{N = "IP Address"; E = { @($_.guest.IPAddress -join '|') } } |
+Select Name, VMHost, 
 
-Export-Csv -NoTypeInformation C:\Users\gemela\Desktop\machine_ip.csv
+@{
+    N = "IP Address"; 
+    
+    E = { 
+        
+        @($_.guest.IPAddress -join '|') 
+    
+    } 
+} |
+
+Export-Csv -NoTypeInformation $UserPath\machine_ip.csv
 
 $report = foreach ($vm in Get-VM) {
 
@@ -32,8 +44,8 @@ $report = foreach ($vm in Get-VM) {
 
 $report | 
 
-Sort-Object -Property { ($_ | 
+Sort-Object -Property { 
     
-        Get-Member -MemberType Properties).Count } -Descending |
+    ($_ | Get-Member -MemberType Properties).Count } -Descending |
 
-Export-Csv $user_path".csv" -NoTypeInformation -UseCulture
+Export-Csv $UserPath\machine_ip.csv -NoTypeInformation -UseCulture
