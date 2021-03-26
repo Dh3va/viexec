@@ -1,5 +1,3 @@
-.("./config.ps1")
-
 #Connection
 Get-Credentials-Connect
 
@@ -12,12 +10,8 @@ Select Name,
 
 @{
     
-    N=’CanonicalName’;
+    N = ’CanonicalName’;
     
-    E={$_.Extensiondata.Info.Vmfs.Extent[0].DiskName}
+    E = { $_.Extensiondata.Info.Vmfs.Extent[0].DiskName }
 
-} |
-
-Sort Name | 
-
-Export-CSV $path\vminfo.csv
+}

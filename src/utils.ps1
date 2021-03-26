@@ -1,6 +1,6 @@
 function Ensure-Server-Set {
     if (
-        -not($server)
+        -not($Server)
     ) {
         Write-Warning "-server is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
         
@@ -10,7 +10,7 @@ function Ensure-Server-Set {
 }
 function Ensure-Cluster-Set {
     if (
-        -not($cluster)
+        -not($Cluster)
     ) {
 
         Write-Warning "-cluster is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
@@ -20,42 +20,51 @@ function Ensure-Cluster-Set {
 }
 
 function Get-Credentials-Connect {
-    param(
-        [string]$Credentials
-    )
 
-    $Credentials = Import-Clixml -Path $UserPath\ucred-secure.cred
+    $Credential = Import-Clixml -Path .\temp\ucred-secure.cred
 
-    Connect-VIServer -Server $server -Credential $Credentials
+    Connect-VIServer -Server $Server -Credential $Credential
 
 }
 
-# function Ensure-Config-Exists {
+function Ensure-Config-Exists {
 
-#     If (!(test-path $UserPath\ucred-secure.cred)) {
-#         $confirmation = Read-Host "Would you like to run the configuration file now? (y/n)"
+    If (!(test-path .\temp\ucred-secure.cred)) {
+        $Confirmation = Read-Host "Would you like to run the configuration file now? (y/n)"
 
-#         if ($confirmation -eq 'y') {
+        if ($Confirmation -eq 'y') {
 
-#             .("./config.ps1")
+            .(".\src\config.ps1")
 
-#         }
-#         else {
-#             Exit 1
-#         }
-#     }
-# }
+        }
+        else {
 
-# function Ensure-Path-Exists {
+            Exit 1
 
-#     $UserPath = ".\temp"
+        }
+    }
+}
 
-#     If (!(test-path $UserPath)) {
+function Ensure-Path-Exists {
 
-#         New-Item -ItemType Directory -Force -Path $UserPath
+    $UserPath = ".\temp"
 
-#     }
-# }
+    If (!(test-path $UserPath)) {
+
+        New-Item -ItemType Directory -Force -Path $UserPath
+
+    }
+}
+
+function Script-List {
+    param(
+        [string[]]$Scripts
+    )
+
+    $ScriptsList = $Scripts -join "`n"
+    
+    Write-Host "This is the list of available scripts:`n$ScriptsList`n"
+}
 
 function Ensure-Script-Exists {
 
@@ -74,7 +83,7 @@ function Ensure-Script-Exists {
 
         Write-Warning "The script $Script doesn't exist.`n"
 
-        Script-List -AvailableScripts $AvailableScripts
+        Script-List -Scripts $AvailableScripts
 
         foreach ($ScriptFile in $ScriptFiles) {
 
@@ -103,12 +112,9 @@ function Normalize-Script-Name {
     return $Script
 }
 
-function Script-List {
-    param(
-        [string[]]$AvailableScripts
-    )
+function Available-Scripts {
 
-    $ScriptsList = $AvailableScripts -join "`n"
-    
-    Write-Host "This is the list of available scripts:`n$ScriptsList`n"
+    #Filters all the scripts inside ./scripts that contains .ps1
+    return Get-ChildItem "scripts" -Name -Filter *.ps1
+
 }

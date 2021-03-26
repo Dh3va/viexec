@@ -1,5 +1,3 @@
-.("./utils.ps1")
-
 Write-Host "
 #
 # ViExec - Help   
@@ -15,6 +13,8 @@ Write-Host "Example:`n./viexec -server <server> -cluster <cluster> -script <scri
 Write-Host "A .\temp folder will be automatically created under .\PowerTEST, and it will be the default path for the scripts results.`n
 In order to use the ViExec, you also need to pass trough the config file.`n"
 
-Script-List
+$AvailableScripts = Available-Scripts
 
-# Ensure-Config-Exists
+Script-List -Scripts $AvailableScripts
+
+Ensure-Config-Exists
