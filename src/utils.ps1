@@ -118,3 +118,11 @@ function Available-Scripts {
     return Get-ChildItem "scripts" -Name -Filter *.ps1
 
 }
+
+function Ensure-Docker-Installed {
+
+}
+
+function Docker-Start-Settings {
+
+}

@@ -3,6 +3,7 @@
 #Show "help" page as default script, it also contains the server and cluster values.
 param(
     [string]$script = "help",
+    [switch]$docker,
     [ValidateSet("127.0.0.1", "Server1", "Server2")]
     [string]$server,
     [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
@@ -18,18 +19,29 @@ if ($script -eq "help" -Or $help) {
     exit 0
 }
 
-Ensure-Path-Exists
+if ($docker -eq "./src/docker" -Or $docker) {
+    Ensure-Docker-Installed
+    Docker-Start-Settings
+    Write-Host "CIAO DOCKER"
 
-Ensure-Server-Set
+    Exit 0
+}
 
-Ensure-Cluster-Set
+    Ensure-Path-Exists
 
-#Normalize user input removing the extension .ps1
-$script = Normalize-Script-Name -Script $script
+    Ensure-Server-Set
 
-Ensure-Script-Exists -Script $script -AvailableScripts $AvailableScripts
+    Ensure-Cluster-Set
 
-.(".\scripts\$script.ps1")
+    #Normalize user input removing the extension .ps1
+    $script = Normalize-Script-Name -Script $script
+
+    Ensure-Script-Exists -Script $script -AvailableScripts $AvailableScripts
+
+    .(".\scripts\$script.ps1")
+
+
+
 
 
 
