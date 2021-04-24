@@ -1,5 +1,9 @@
 Exit 0
 
+Ensure-Server-Set
+
+Ensure-Cluster-Set
+
 # #Connection
 # Get-Credentials-Connect
 

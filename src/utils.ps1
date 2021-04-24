@@ -55,6 +55,12 @@ function Ensure-Path-Exists {
 
     }
 }
+function Available-Scripts {
+
+    #Filters all the scripts inside ./scripts that contains .ps1
+    return Get-ChildItem "./scripts" -Name -Filter *.ps1
+
+}
 
 function Script-List {
     param(
@@ -112,17 +118,10 @@ function Normalize-Script-Name {
     return $Script
 }
 
-function Available-Scripts {
+# function Ensure-Docker-Installed {
 
-    #Filters all the scripts inside ./scripts that contains .ps1
-    return Get-ChildItem "scripts" -Name -Filter *.ps1
+# }
 
-}
+# function Docker-Start-Settings {
 
-function Ensure-Docker-Installed {
-
-}
-
-function Docker-Start-Settings {
-
-}
+# }
