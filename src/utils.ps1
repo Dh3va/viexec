@@ -1,3 +1,4 @@
+#This function is used in every script, it ensures that the field server is specified. 
 function Ensure-Server-Set {
     if (
         -not($Server)
@@ -8,6 +9,8 @@ function Ensure-Server-Set {
 
     }
 }
+
+#This function is used in every script that requires the field cluster. 
 function Ensure-Cluster-Set {
     if (
         -not($Cluster)
@@ -19,6 +22,8 @@ function Ensure-Cluster-Set {
     }
 }
 
+
+#Prompt user for credentials then stores them in a secure file under the './temp' folder.
 function Get-Credentials-Connect {
 
     $Credential = Import-Clixml -Path .\temp\ucred-secure.cred
@@ -27,6 +32,7 @@ function Get-Credentials-Connect {
 
 }
 
+#This function checks if the file ucred-secure exists, if it doesn't, will ask the user if he wants to run the configuration script.
 function Ensure-Config-Exists {
 
     If (!(test-path .\temp\ucred-secure.cred)) {
@@ -45,9 +51,10 @@ function Ensure-Config-Exists {
     }
 }
 
+#Checks if the folder './temp' exists, if it doesn't, it will be created automatically.
 function Ensure-Path-Exists {
 
-    $UserPath = ".\temp"
+    $UserPath = "./temp"
 
     If (!(test-path $UserPath)) {
 
@@ -55,13 +62,15 @@ function Ensure-Path-Exists {
 
     }
 }
+
+#Filters all the scripts inside './scripts' that contains '.ps1'.
 function Available-Scripts {
 
-    #Filters all the scripts inside ./scripts that contains .ps1
     return Get-ChildItem "./scripts" -Name -Filter *.ps1
 
 }
 
+#Lists all the available scripts.
 function Script-List {
     param(
         [string[]]$Scripts
@@ -72,6 +81,7 @@ function Script-List {
     Write-Host "This is the list of available scripts:`n$ScriptsList`n"
 }
 
+#Checks if the script typed by the user exists, if it doesn't, will list all the available scripts.
 function Ensure-Script-Exists {
 
     param(
@@ -102,6 +112,7 @@ function Ensure-Script-Exists {
 
 }
 
+#Normalize the script name removing the '.ps1' extension if the user types it.  
 function Normalize-Script-Name {
 
     param(
