@@ -6,10 +6,54 @@ ViExec is a PowerShell utility to retrieve quick information from any VCenter, s
 ./viexec 'script-name' 'server-name' 'cluster-name'
 ```
 
-The fields <server> and <cluster> can be autocompleted by pressing 'TAB'.
-You can add or edit the available servers and clusters in the file named viexec.ps1.
+## Installation and setup
 
-ViExec uses nimmis/vcsim container in order to let you test the scripts locally before running them on your vCenters, Docker is required to start the testing environment.
+Using the Docker-run/stop/logs scripts requires [Docker](https://www.docker.com/) to be installed on your machine. 
+
+To start using ViExec simply do a clone of the repository:
+
+```bash
+gh repo clone Dh3va/viexec
+```
+Then run the configuration using the help option:
+
+```bash
+./viexec.ps1 -help
+```
+
+## Usage
+
+ViExec can can be used to automize and test your PowerCLI scipts.
+
+```bash
+datastores localhost DC0_C0
+
+Name                           Port  User
+----                           ----  ----
+localhost                      443   Alessandro
+
+Name          : LocalDS_0
+CanonicalName :
+
+
+Name          : LocalDS_1
+CanonicalName :
+
+
+Name          : LocalDS_2
+CanonicalName :
+```
+
+It accepts two fields, 'server' and 'cluster' and they both can be autocompleted by pressing 'TAB'.
+You can add or edit the available servers and clusters in viexec.ps1.
+
+```bash
+    [ValidateSet("localhost", "Server1", "Server2")]
+    [string]$server,
+    [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
+```
+
+ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) container in order to let you test the scripts locally before running them on your vCenters, Docker is required to start the testing environment.
 To start the Docker container type:
 
 ./viexec docker-run
