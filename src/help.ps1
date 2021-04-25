@@ -10,7 +10,7 @@ Write-Host "ViExec is a PowerShell utility to retrive quick informations from an
 
 Write-Host "./viexec <script-name> <server-name> <cluster-name>`n"
 
-Write-Host "The fileds <server> and <cluster> can be autocompleted by pressing 'TAB'.`nYou can add or edit the available servers and clusters in the file named viexec.ps1.`n"
+Write-Host "The fields <server> and <cluster> can be autocompleted by pressing 'TAB'.`nYou can add or edit the available servers and clusters in the file named viexec.ps1.`n"
 
 Write-Host "ViExec uses nimmis/vcsim container in order to let you test the scripts locally before running them on your vCenters, Docker is required to start the testing environment.`nTo start the Docker container type:`n"
 

@@ -1,9 +1,9 @@
-#Connection
-Get-Credentials-Connect
-
 Ensure-Server-Set
 
 Ensure-Cluster-Set
+
+#Connection
+Get-Credentials-Connect
 
 #PowerCLI script
 Get-Cluster $cluster | 

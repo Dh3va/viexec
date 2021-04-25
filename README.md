@@ -1,6 +1,8 @@
-ViExec is a PowerShell utility to retrive quick informations from any VCenter, simply type:
+# ViExec is a PowerShell utility to retrive quick informations from any VCenter.
 
-./viexec <script-name> <server-name> <cluster-name>
+Simply type:
+
+./viexec 'script-name' 'server-name' 'cluster-name'
 
 The fields <server> and <cluster> can be autocompleted by pressing 'TAB'.
 You can add or edit the available servers and clusters in the file named viexec.ps1.
@@ -37,4 +39,4 @@ If you need to export the results of the scripts add: > ./path/nameofthefile.txt
 
 If you wish, you can also use the full command with all his parameters, example:
 
-./viexec -server <server> -cluster <cluster> -script <script>
+./viexec -server 'server' -cluster 'cluster' -script 'script'
