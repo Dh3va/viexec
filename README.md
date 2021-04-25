@@ -15,18 +15,20 @@ To start using ViExec simply do a clone of the repository:
 ```bash
 gh repo clone Dh3va/viexec
 ```
-Then run the configuration using the help option:
+Then run the configuration script typing:
 
 ```bash
 ./viexec.ps1 -help
 ```
 
+The config script will prompt you for your user and password that will be stored securely and re-used by the scripts.
+
 ## Usage
 
-ViExec can can be used to automize and test your PowerCLI scipts.
+ViExec can be used to automize and test your PowerCLI scripts:
 
 ```bash
-datastores localhost DC0_C0
+./viexec datastores localhost DC0_C0
 
 Name                           Port  User
 ----                           ----  ----
@@ -45,44 +47,66 @@ CanonicalName :
 ```
 
 It accepts two fields, 'server' and 'cluster' and they both can be autocompleted by pressing 'TAB'.
-You can add or edit the available servers and clusters in viexec.ps1.
+
+You can add, remove or edit the available servers and clusters in viexec.ps1:
 
 ```bash
     [ValidateSet("localhost", "Server1", "Server2")]
     [string]$server,
     [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
 ```
+## Testing environment
 
-ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) container in order to let you test the scripts locally before running them on your vCenters, Docker is required to start the testing environment.
+ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) container to let you test the scripts locally before running them on your vCenters, [Docker](https://www.docker.com/) is required to start the testing environment.
+
 To start the Docker container type:
 
+```bash
 ./viexec docker-run
+```
 
-Running the docker-up script a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs, you can adjust those values under the docker-up script.
+Running the docker-up script, a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs, you can adjust those values under the docker-up script:
+
+```bash
+$dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
+```
 
 To stop the testing environment type:
 
+```bash
 ./viexec docker-stop
+```
 
-Last but not least, the uid of the Docker continaer is automatically saved under the 'temp' folder and will be used by the script 'docker-logs' to retirve quickly the logs from the Docker container.
+Last but not least, the uid of the Docker container is automatically saved under the './temp' folder and will be used by the script 'docker-logs' to retrieve quickly the logs from the Docker container.
 
-In order to start using ViExec, you need to run the config file that will be available at the end of the help page, it will prompt you for your user and password that will be stored securely and re-used by the scripts.
+The './temp' folder will be automatically created under './PowerTEST', and it will be used to store the uid of the Docker container and the user credentials.
 
-A 'temp' folder will be automatically created under .\PowerTEST, and it will be used to store the uid of the Docker container and the credentials.
-
-This is the list of available scripts:
-datastores.ps1
-docker-logs.ps1
-docker-run.ps1
-docker-stop.ps1
-ipinfo.ps1
-vminfo.ps1
-vmsnic.ps1
+## Exporting the results of your scripts
 
 If you need to export the results of the scripts add: > ./path/nameofthefile.txt/csv after the script, example:
 
+```bash
 ./viexec vminfo server1 cluster1 > ./temp/vminfo.txt
+```
 
-If you wish, you can also use the full command with all his parameters, example:
+If you wish, you can also use the full command with all his parameters, for example:
 
 ./viexec -server 'server' -cluster 'cluster' -script 'script'
+
+## Add these functions to your scripts to test and use them with ViExec
+
+Place your 'scripts.ps1' inside the './scripts' folder and add the following Functions and lines to integrate them with ViExec:
+
+```bash
+Ensure-Server-Set
+
+Ensure-Cluster-Set
+
+#Connects to the vCenter using the securely stored credentials
+Get-Credentials-Connect
+
+#PowerCLI script goes after the '|'.
+Get-Cluster $cluster | 
+```
+
+If your script doesn't need a Cluster and need to be run on all the available Clusters, remove Ensure-Cluster-Set and the Get-Cluster from the script.
