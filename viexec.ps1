@@ -3,7 +3,7 @@
 #Show "help" page as default script, it also contains the server and cluster values.
 param(
     [string]$script = "help",
-    [ValidateSet("127.0.0.1", "localhost", "Server1", "Server2")]
+    [ValidateSet("localhost", "Server1", "Server2")]
     [string]$server,
     [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
     [string]$cluster,
