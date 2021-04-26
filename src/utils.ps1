@@ -38,12 +38,12 @@ function Ensure-Config-Exists {
     If (!(test-path .\temp\ucred-secure.cred)) {
         $Confirmation = Read-Host "Would you like to run the configuration file now? (y/n)"
 
-        if ($Confirmation -eq 'y') {
+        if ($Confirmation -Eq 'y') {
 
             .(".\src\config.ps1")
 
         }
-        else {
+        elseif ($Confirmation -Eq 'n') {
 
             Exit 1
 
@@ -129,10 +129,75 @@ function Normalize-Script-Name {
     return $Script
 }
 
-# function Ensure-Docker-Installed {
+function Ensure-Docker-Uid {
 
-# }
+    $Dockeruid = Get-Content -Path ./temp/dockeruid
 
-# function Docker-Start-Settings {
+    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
 
-# }
+    if ($Dockeruid -Eq "" -Or $Dockerps -Eq "") {
+        
+        Write-Host "`nNon ci sono container avviati.`n"
+
+        Exit 1
+    
+    }
+
+    else {
+        
+        Ensure-Container-Run
+
+    }
+
+}
+
+function Ensure-Container-Run {
+
+    if ($Dockerps -eq $Dockeruid) {
+        
+        & "docker" "logs" $Checkuid
+
+        Exit 1
+        
+    }
+    
+    else {
+        
+        Remove-Item -Path ./temp/dockeruid
+
+        & "docker" "logs" $Dockerps
+
+        $Dockerps | Out-File ./temp/dockeruid
+
+        Write-Host "dockeruid aggiornato: $Dockerps."
+
+    }
+
+}
+
+#This will start a container with a fully functional vCenter running with 3 cluster, 6 hosts, 10 datastores and 35 VMs and save the uid to a file.
+function Ensure-Container-Run {
+
+    $Dockeruid = Get-Content -Path ./temp/dockeruid
+
+    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
+
+    if ($Dockeruid -Eq "" -Or $Dockerps -Eq "") {
+
+        $dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
+
+        $dockeruid | Out-File ./temp/dockeruid
+
+        Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
+
+        Exit 1
+    
+    }
+    else {
+
+        Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
+
+        Exit 1
+
+    }
+}

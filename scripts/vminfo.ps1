@@ -2,7 +2,7 @@ Ensure-Server-Set
 
 Ensure-Cluster-Set
 
-#Connection
+#Connects to the vCenter using the securely stored credentials
 Get-Credentials-Connect
 
 #PowerCLI script
