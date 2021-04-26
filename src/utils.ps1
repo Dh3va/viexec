@@ -180,7 +180,7 @@ function Ensure-Container {
 
         Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
 
-        Exit 1
+        Exit 0
     
     }
 }
