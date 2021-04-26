@@ -129,13 +129,14 @@ function Normalize-Script-Name {
     return $Script
 }
 
+#Ensures that dockeruid and the result of docker ps are not empty, and that the values of dockeruid and the docker ps are equal.
 function Ensure-Docker-Uid {
 
     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
     $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
 
-    if ($Dockeruid -Eq "" -Or $Dockerps -Eq "") {
+    if (!$Dockeruid -And !$Dockerps) {
         
         Write-Host "`nThere are no containers running.`n"
 
@@ -144,64 +145,70 @@ function Ensure-Docker-Uid {
     }
 
     else {
-        
-        Ensure-Container-Run
 
+        if ($Dockeruid -Ne $Dockerps) {
+
+            $Dockerps | Out-File ./temp/dockeruid -Force
+
+            Write-Host "dockeruid updated: $Dockerps."
+
+        }
+        
     }
 
 }
 
-function Ensure-Container-Run {
+#Checks if dockerps contais dockeruid, if it does, the container is running, otherwise it starts the docker container.
+function Ensure-Container {
 
     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
     $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
 
-    if ($Dockerps -eq $Dockeruid) {
-        
-        & "docker" "logs" $Dockeruid
+    if ($Dockerps -contains $Dockeruid) {
+
+        Write-Host "`nThe vCenter is already running, use localhost as server and DC0_0 as cluster.`n"
 
         Exit 1
         
     }
-    
-    else {
+    elseif (!$Dockeruid -And !$Dockerps) {
         
-        Remove-Item -Path ./temp/dockeruid
+        $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
 
-        & "docker" "logs" $Dockerps
-
-        $Dockerps | Out-File ./temp/dockeruid
-
-        Write-Host "dockeruid aggiornato: $Dockerps."
-
-    }
-
-}
-
-#This will start a container with a fully functional vCenter running with 3 cluster, 6 hosts, 10 datastores and 35 VMs and save the uid to a file.
-function Ensure-Container-Run {
-
-    $Dockeruid = Get-Content -Path ./temp/dockeruid
-
-    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
-
-    if ($Dockeruid -Eq "" -Or $Dockerps -Eq "") {
-
-        $dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
-
-        $dockeruid | Out-File ./temp/dockeruid
+        $Dockeruid | Out-File ./temp/dockeruid
 
         Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
 
         Exit 1
     
     }
-    else {
+}
 
-        Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
+function Stop-Container {
+      
+    $Dockeruid = Get-Content -Path ./temp/dockeruid
+
+    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
+
+    if ($Dockerps -contains $Dockeruid) {
+
+        & "docker" "stop" $Dockeruid
+        
+        Write-Host "`nThe container has been stopped: $Dockeruid`n"
+
+        $Dockeruid = ""
+
+        $Dockeruid | Out-File ./temp/dockeruid
+
+    }
+
+    else {
+        
+        "`nThere are no containers running.`n"
 
         Exit 1
 
     }
+    
 }
