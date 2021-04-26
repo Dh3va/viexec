@@ -64,7 +64,6 @@ You can add, remove or edit the available servers and clusters in viexec.ps1:
 ```
 ## Testing environment
 
-(Docker integration is still in-progress.)
 ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) to let you test the scripts locally before running them on your vCenters, [Docker](https://www.docker.com/) is required to start the testing environment.
 
 To start the Docker container type:
