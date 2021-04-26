@@ -73,7 +73,7 @@ To start the Docker container type:
 ./viexec docker-run
 ```
 
-Running the docker-run script, a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs, you can adjust those values under the docker-up script:
+Running the docker-run script, a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs:
 
 ```bash
 $dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
@@ -118,4 +118,4 @@ Get-Credentials-Connect
 Get-Cluster $cluster | 
 ```
 
-If your script doesn't need a Cluster and need to be run on all the available Clusters, remove Ensure-Cluster-Set and the Get-Cluster from the script.
+If your script doesn't need a specific Cluster remove Ensure-Cluster-Set and the Get-Cluster from the script.

@@ -137,7 +137,7 @@ function Ensure-Docker-Uid {
 
     if ($Dockeruid -Eq "" -Or $Dockerps -Eq "") {
         
-        Write-Host "`nNon ci sono container avviati.`n"
+        Write-Host "`nThere are no containers running.`n"
 
         Exit 1
     
@@ -153,9 +153,13 @@ function Ensure-Docker-Uid {
 
 function Ensure-Container-Run {
 
+    $Dockeruid = Get-Content -Path ./temp/dockeruid
+
+    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
+
     if ($Dockerps -eq $Dockeruid) {
         
-        & "docker" "logs" $Checkuid
+        & "docker" "logs" $Dockeruid
 
         Exit 1
         
