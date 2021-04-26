@@ -14,9 +14,9 @@ Write-Host "The fields <server> and <cluster> can be autocompleted by pressing '
 
 Write-Host "ViExec uses nimmis/vcsim container in order to let you test the scripts locally before running them on your vCenters, Docker is required to start the testing environment.`nTo start the Docker container type:`n"
 
-Write-Host "./viexec docker-run`n"
+Write-Host "./viexec docker-start`n"
 
-Write-Host "Running the docker-up script a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs, you can adjust those values under the docker-up script.`n"
+Write-Host "Running the docker-start script a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs, you can adjust those values under the docker-start script.`n"
 
 Write-Host "To stop the testing environment type:`n"
 
