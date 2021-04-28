@@ -8,9 +8,19 @@ ViExec is a PowerShell utility to retrieve quick information from any VCenter, s
 
 ## Installation and setup
 
-PowerShell is required to use ViExec, follow the links below to install it:
+PowerShell and PowerCLI are required to use ViExec:
 
 - [Install PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
+
+Once PowerShell is installed:
+
+```Bash
+pwsh
+
+Find-Module -Name VMware.PowerCLI
+
+Install-Module -Name VMware.PowerCLI -Scope CurrentUser
+```
 
 Using the Docker-start/stop/logs scripts requires [Docker](https://www.docker.com/) to be installed on your machine. 
 
