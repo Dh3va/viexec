@@ -8,7 +8,7 @@ ViExec is a PowerShell utility to retrieve quick information from any VCenter, s
 
 ## Installation and setup
 
-Using the Docker-run/stop/logs scripts requires [Docker](https://www.docker.com/) to be installed on your machine. 
+Using the Docker-start/stop/logs scripts requires [Docker](https://www.docker.com/) to be installed on your machine. 
 
 To start using ViExec simply do a clone of the repository (using gh):
 
