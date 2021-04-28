@@ -69,10 +69,10 @@ ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) to let you te
 To start the Docker container type:
 
 ```bash
-./viexec docker-run
+./viexec docker-start
 ```
 
-Running the docker-run script, a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs:
+Running the docker-start script, a vCenter will be automatically deployed with 3 clusters, 6 hosts, 10 Datastores and 35 VMs:
 
 ```bash
 $dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
