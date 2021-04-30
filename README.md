@@ -46,7 +46,7 @@ If you are using ViExec from MacOs or Linux, install PowerShell on your System.
 ViExec can be used to automize and test your PowerCLI scripts:
 
 ```bash
-PS /Users/ale/Documents/PowerTEST> ./viexec.ps1 vminfo localhost DC0_C0
+./viexec.ps1 vminfo localhost DC0_C0
 
 Name                           Port  User
 ----                           ----  ----
