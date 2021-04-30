@@ -83,7 +83,7 @@ function Script-List {
 
 #Checks if the script typed by the user exists, if it doesn't, will list all the available scripts.
 function Ensure-Script-Exists {
-
+    
     param(
         [string]$Script,
         [string[]]$AvailableScripts
@@ -174,7 +174,7 @@ function Ensure-Container {
     }
     elseif (!$Dockeruid -And !$Dockerps) {
         
-        $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35"
+        $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35" 
 
         $Dockeruid | Out-File ./temp/dockeruid
 

@@ -8,4 +8,4 @@ Get-Credentials-Connect
 #PowerCLI script
 Get-Cluster $cluster | 
 Get-VM | 
-Select Name, PowerState, Guest, NumCpu, MemoryMB, MemoryGB
+Select Name, PowerState, GuestId, NumCpu, MemoryGB, DatastoreIdList, VMHost, ResourcePool, DrsAutomationLevel, PersistentId, Id, UsedSpaceGB

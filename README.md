@@ -46,29 +46,31 @@ If you are using ViExec from MacOs or Linux, install PowerShell on your System.
 ViExec can be used to automize and test your PowerCLI scripts:
 
 ```bash
-./viexec.ps1 vminfo localhost DC0_C0
+PS /Users/ale/Documents/PowerTEST> ./viexec.ps1 vminfo localhost DC0_C0
 
 Name                           Port  User
 ----                           ----  ----
-localhost                      443   user
+localhost                      443   a
 
-Name       : DC0_C0_RP0_VM5
-PowerState : PoweredOn
-Guest      :
-NumCpu     : 1
-MemoryMB   : 32
-MemoryGB   : 0.03125
-
-
-Name       : DC0_C0_RP0_VM9
-PowerState : PoweredOn
-Guest      :
-NumCpu     : 1
-MemoryMB   : 32
-MemoryGB   : 0.03125
+Name               : DC0_C0_RP0_VM5
+PowerState         : PoweredOn
+GuestId            : otherGuest
+NumCpu             : 1
+MemoryGB           : 0.03125
+DatastoreIdList    : {Datastore-/tmp/govcsim-DC0-LocalDS_0-283607359@folder-5}
+VMHost             : DC0_C0_H0
+ResourcePool       : Resources
+DrsAutomationLevel : AsSpecifiedByCluster
+PersistentId       : 9808c19f-53e2-5f57-ada0-f2dedcc70ae5
+Id                 : VirtualMachine-vm-470
+UsedSpaceGB        : 0
 ```
 
-It accepts two fields, 'server' and 'cluster' and they both can be autocompleted by pressing 'TAB'.
+It accepts two fields, 'server' and 'cluster', they both can be autocompleted by pressing 'TAB' and the 'Cluster' option now accepts multiple values, allowing you to execute a script on multiple clusters at the same time:
+
+```bash_
+./viexec vminfo localhost DC0_C0,DC0_C1,DC0_C2
+```
 
 You can add, remove or edit the available servers and clusters in viexec.ps1:
 
@@ -78,6 +80,7 @@ You can add, remove or edit the available servers and clusters in viexec.ps1:
     [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
     [string]$cluster
 ```
+
 ## Testing environment
 
 ViExec uses [nimmis/vcsim](https://github.com/nimmis/docker-vcsim) to let you test the scripts locally before running them on your vCenters, [Docker](https://www.docker.com/) is required to start the testing environment.

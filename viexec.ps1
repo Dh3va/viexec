@@ -5,8 +5,8 @@ param(
     [string]$script = "help",
     [ValidateSet("localhost", "Server1", "Server2")]
     [string]$server,
-    [ValidateSet("DC0_C0", "Cluster2", "Cluster3")]
-    [string]$cluster,
+    [ValidateSet("DC0_C0", "DC0_C1", "DC0_C2", "Customer1")]
+    [string[]]$cluster,
     [switch]$help
 )
 
