@@ -31,13 +31,13 @@ gh repo clone Dh3va/viexec
 
 git clone https://github.com/Dh3va/viexec.git
 ```
-Then run the configuration script type:
+Then run the configuration script:
 
 ```bash
 ./viexec config
 ```
 
-The config script will prompt you for your user and password that will be stored securely and re-used by the scripts.
+The config script will prompt you for the user and password to connect to the vCenter. Your credentials will be securely stored and re-used by the scripts.
 
 ## Usage
 
