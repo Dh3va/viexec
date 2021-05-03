@@ -31,15 +31,13 @@ gh repo clone Dh3va/viexec
 
 git clone https://github.com/Dh3va/viexec.git
 ```
-Then run the configuration script typing:
+Then run the configuration script type:
 
 ```bash
-./viexec.ps1 -help
+./viexec config
 ```
 
 The config script will prompt you for your user and password that will be stored securely and re-used by the scripts.
-
-If you are using ViExec from MacOs or Linux, install PowerShell on your System.
 
 ## Usage
 
@@ -101,12 +99,11 @@ To stop the testing environment type:
 
 ```bash
 ./viexec docker-stop
-(Under development)
 ```
 
 Last but not least, the uid of the Docker container is automatically saved under the './temp' folder and will be used by the script 'docker-logs' to retrieve quickly the logs from the Docker container.
 
-The './temp' folder will be automatically created under './PowerTEST', and it will be used to store the uid of the Docker container and the user credentials.
+A './temp' folder will be automatically created and it will be used to store the uid of the Docker container and the user credentials.
 
 ## Exporting the results of your scripts
 

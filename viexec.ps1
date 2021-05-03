@@ -15,10 +15,8 @@ param(
 
 if ($script -eq "help" -Or $help) {
     .(".\src\help.ps1")    
-    exit 0
+    Exit 0
 }
-
-Ensure-Path-Exists
 
 #Normalize user input removing the extension .ps1
 $script = Normalize-Script-Name -Script $script
@@ -26,6 +24,8 @@ $script = Normalize-Script-Name -Script $script
 $AvailableScripts = Available-Scripts
 
 Ensure-Script-Exists -Script $script -AvailableScripts $AvailableScripts
+
+Ensure-Path-Exists
 
 .(".\scripts\$script.ps1")
 

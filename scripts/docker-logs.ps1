@@ -1,4 +1,4 @@
-#Check if the Docker uid
+#Check if the Docker uid exists
 Ensure-Docker-Uid
 
 $dockeruid = Get-Content -Path ./temp/dockeruid

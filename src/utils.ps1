@@ -1,5 +1,6 @@
 #This function is used in every script, it ensures that the field server is specified. 
 function Ensure-Server-Set {
+
     if (
         -not($Server)
     ) {
@@ -12,6 +13,7 @@ function Ensure-Server-Set {
 
 #This function is used in every script that requires the field cluster. 
 function Ensure-Cluster-Set {
+
     if (
         -not($Cluster)
     ) {
@@ -21,7 +23,6 @@ function Ensure-Cluster-Set {
         exit 1
     }
 }
-
 
 #Prompt user for credentials then stores them in a secure file under the './temp' folder.
 function Get-Credentials-Connect {
@@ -35,7 +36,8 @@ function Get-Credentials-Connect {
 #This function checks if the file ucred-secure exists, if it doesn't, will ask the user if he wants to run the configuration script.
 function Ensure-Config-Exists {
 
-    If (!(test-path .\temp\ucred-secure.cred)) {
+    If (!(Test-Path .\temp\ucred-secure.cred)) {
+
         $Confirmation = Read-Host "Would you like to run the configuration file now? (y/n)"
 
         if ($Confirmation -Eq 'y') {
@@ -49,6 +51,32 @@ function Ensure-Config-Exists {
 
         }
     }
+}
+
+#Check if the file ucre-secure.cred exists
+function Ensure-Replace {
+
+    $CredPath = Test-Path -Path .\temp\ucred-secure.cred
+
+    If ($CredPath -Eq $True) {
+
+        $Confirmation = Read-Host "You already store credentials, would you like to replace them? (y/n)"
+
+        if ($Confirmation -Eq 'y') {
+            #proceed
+        }
+
+        elseif ($Confirmation -Eq 'n') {
+
+            Exit 1
+
+        }
+    }
+
+    else {
+        #proceed
+    }
+    
 }
 
 #Checks if the folder './temp' exists, if it doesn't, it will be created automatically.
