@@ -27,10 +27,5 @@ Ensure-Script-Exists -Script $script -AvailableScripts $AvailableScripts
 
 Ensure-Path-Exists
 
-.(".\scripts\$script.ps1")
-
-
-
-
-
-
+Try{.(".\scripts\$script.ps1")}
+Catch{Write-Host -Foreground Red -Background Black $_.FullyQualifiedErrorId}
