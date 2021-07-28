@@ -4,10 +4,8 @@ function Ensure-Server-Set {
     if (
         -not($Server)
     ) {
-        Write-Warning "-server is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
+        Throw "`nServer is required: ./viexec 'script-name' 'server-name' 'cluster-name'`n"
         
-        exit 1
-
     }
 }
 
@@ -18,9 +16,8 @@ function Ensure-Cluster-Set {
         -not($Cluster)
     ) {
 
-        Write-Warning "-cluster is required: ./viexec -server <server> -cluster <cluster> -script <script>`n"
-        
-        exit 1
+        Throw "`nCluster is required: ./viexec 'script-name' 'server-name' 'cluster-name'`n"
+
     }
 }
 
@@ -29,8 +26,9 @@ function Get-Credentials-Connect {
 
     $Credential = Import-Clixml -Path .\temp\ucred-secure.cred
 
-    Connect-VIServer -Server $Server -Credential $Credential
+    Connect-VIServer -Server $Server -Credential $Credential | Tee-Object -Variable Connect
 
+    $Connect.Count
 }
 
 #This function checks if the file ucred-secure exists, if it doesn't, will ask the user if he wants to run the configuration script.
@@ -185,7 +183,9 @@ function Ensure-Container {
     }
     elseif (!$Dockeruid) {
         
-        $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35" 
+        $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35" | Tee-Object -Variable DockerStart
+
+        $DockerStart.Count
 
         $Dockeruid | Out-File ./temp/dockeruid
 
