@@ -162,28 +162,13 @@ function Ensure-Docker-Uid {
 
     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
-    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
-
-    if (!$Dockeruid -And !$Dockerps) {
+    if (!$Dockeruid) {
         
         Write-Host "`nThere are no containers running.`n"
 
         Exit 1
     
     }
-
-    else {
-
-        if ($Dockeruid -Ne $Dockerps) {
-
-            $Dockerps | Out-File ./temp/dockeruid -Force
-
-            Write-Host "dockeruid updated: $Dockerps."
-
-        }
-        
-    }
-
 }
 
 #Checks if dockerps contais dockeruid, if it does, the container is running, otherwise it starts the docker container.
@@ -191,22 +176,20 @@ function Ensure-Container {
 
     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
-    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
+    if ($Dockeruid -Ne "") {
 
-    if ($Dockerps -contains $Dockeruid) {
-
-        Write-Host "`nThe vCenter is already running, use localhost as server and DC0_0 as cluster.`n"
+        Write-Host "`nThe vCenter is already running, use localhost as server and DC0_0 as cluster, this is the UID: $Dockeruid`n"
 
         Exit 1
         
     }
-    elseif (!$Dockeruid -And !$Dockerps) {
+    elseif (!$Dockeruid) {
         
         $Dockeruid = & "docker" "run" "--detach" "--publish" "443:443" "nimmis/vcsim" "-c" "3" "--data-stores" "10" "--hosts" "6" "--virtual-machines" "35" 
 
         $Dockeruid | Out-File ./temp/dockeruid
 
-        Write-Host "`nThe vCenter has been started, use localhost as server and DC0_C0 as cluster.`n"
+        Write-Host "`nThe vCenter has been started. Use localhost as a server and DC0_C0 as cluster.`n"
 
         Exit 0
     
@@ -217,13 +200,11 @@ function Stop-Container {
       
     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
-    $Dockerps = & "docker" "ps" "--format" "{{.ID}}"
-
-    if ($Dockerps -contains $Dockeruid) {
+    if ($Dockeruid -Ne "") {
 
         & "docker" "stop" $Dockeruid
         
-        Write-Host "`nThe container has been stopped: $Dockeruid`n"
+        Write-Host "`nThe container: $Dockeruid`nHas been stopped.`n"
 
         $Dockeruid = ""
 
