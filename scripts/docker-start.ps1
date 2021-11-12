@@ -1,6 +1,7 @@
 Ensure-Path-Exists
 
-#Checks if the container is already running.
+# Ensure-Docker-Uid
+
 Ensure-Container
 
 

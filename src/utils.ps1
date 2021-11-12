@@ -156,18 +156,18 @@ function Normalize-Script-Name {
 }
 
 #Ensures that dockeruid and the result of docker ps are not empty, and that the values of dockeruid and the docker ps are equal.
-function Ensure-Docker-Uid {
+# function Ensure-Docker-Uid {
 
-    $Dockeruid = Get-Content -Path ./temp/dockeruid
+#     $Dockeruid = Get-Content -Path ./temp/dockeruid
 
-    if (!$Dockeruid) {
+#     if (!$Dockeruid) {
         
-        Write-Host "`nThere are no containers running.`n"
+#         Write-Host "`nThere are no containers running.`n"
 
-        Exit 1
+#         Exit 1
     
-    }
-}
+#     }
+# }
 
 #Checks if dockerps contais dockeruid, if it does, the container is running, otherwise it starts the docker container.
 function Ensure-Container {
@@ -194,6 +194,20 @@ function Ensure-Container {
         Exit 0
     
     }
+}
+
+function Docker-Inspect {
+
+    $Dockeruid = Get-Content -Path ./temp/dockeruid
+
+    $DockerInspect = & "docker" "inspect" $Dockeruid
+    
+    if ($DockerInspect = false) {
+
+
+
+    }
+
 }
 
 function Stop-Container {
